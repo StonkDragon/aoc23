@@ -18,34 +18,34 @@
 
 ## [Day9](day9/main.scale):
 
-## [Day10](day1/main.scale0):
+## [Day10](day10/main.scale):
 
-## [Day11](day1/main.scale1):
+## [Day11](day11/main.scale):
 
-## [Day12](day1/main.scale2):
+## [Day12](day12/main.scale):
 
-## [Day13](day1/main.scale3):
+## [Day13](day13/main.scale):
 
-## [Day14](day1/main.scale4):
+## [Day14](day14/main.scale):
 
-## [Day15](day1/main.scale5):
+## [Day15](day15/main.scale):
 
-## [Day16](day1/main.scale6):
+## [Day16](day16/main.scale):
 
-## [Day17](day1/main.scale7):
+## [Day17](day17/main.scale):
 
-## [Day18](day1/main.scale8):
+## [Day18](day18/main.scale):
 
-## [Day19](day1/main.scale9):
+## [Day19](day19/main.scale):
 
-## [Day20](day2/main.scale0):
+## [Day20](day20/main.scale):
 
-## [Day21](day2/main.scale1):
+## [Day21](day21/main.scale):
 
-## [Day22](day2/main.scale2):
+## [Day22](day22/main.scale):
 
-## [Day23](day2/main.scale3):
+## [Day23](day23/main.scale):
 
-## [Day24](day2/main.scale4):
+## [Day24](day24/main.scale):
 
-## [Day25](day2/main.scale5):
+## [Day25](day25/main.scale):
