@@ -1,51 +1,51 @@
 # Advent of Code 2023 in Scale
 
-## Day1:
+## [Day1](day1/main.scale):
 
-## Day2:
+## [Day2](day2/main.scale):
 
-## Day3:
+## [Day3](day3/main.scale):
 
-## Day4:
+## [Day4](day4/main.scale):
 
-## Day5:
+## [Day5](day5/main.scale):
 
-## Day6:
+## [Day6](day6/main.scale):
 
-## Day7:
+## [Day7](day7/main.scale):
 
-## Day8:
+## [Day8](day8/main.scale):
 
-## Day9:
+## [Day9](day9/main.scale):
 
-## Day10:
+## [Day10](day1/main.scale0):
 
-## Day11:
+## [Day11](day1/main.scale1):
 
-## Day12:
+## [Day12](day1/main.scale2):
 
-## Day13:
+## [Day13](day1/main.scale3):
 
-## Day14:
+## [Day14](day1/main.scale4):
 
-## Day15:
+## [Day15](day1/main.scale5):
 
-## Day16:
+## [Day16](day1/main.scale6):
 
-## Day17:
+## [Day17](day1/main.scale7):
 
-## Day18:
+## [Day18](day1/main.scale8):
 
-## Day19:
+## [Day19](day1/main.scale9):
 
-## Day20:
+## [Day20](day2/main.scale0):
 
-## Day21:
+## [Day21](day2/main.scale1):
 
-## Day22:
+## [Day22](day2/main.scale2):
 
-## Day23:
+## [Day23](day2/main.scale3):
 
-## Day24:
+## [Day24](day2/main.scale4):
 
-## Day25:
+## [Day25](day2/main.scale5):
