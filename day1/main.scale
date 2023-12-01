@@ -1,3 +1,67 @@
-function main(): none
-    "Hello, World" puts
+import std.functional.Do
+
+function part1(data: [str]): int
+    new<int>[data:size] => decl nums: [int]
+    decl numIndex: int
+
+    foreach line in data do
+        if line nil == then
+            continue
+        fi
+
+        line:view do 'filter lambda(c: int8): bool c '0' >= c '9' <= && return end => decl filtered: str
+
+        new<int8> { filtered[0], filtered[filtered:size 1 -], 0 } => decl numStr: str
+        numStr int::parse => nums[numIndex]
+        numIndex 1 +> numIndex
+    done
+
+    nums do 'reduce Reducers::sum return
+end
+
+function part2(data: [str]): int
+    new<str> {
+        "1", "2", "3", "4", "5", "6", "7", "8", "9",
+        "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"
+    } => decl validNums: [str]
+
+    new<int>[data:size] => decl nums: [int]
+    decl numIndex: int
+
+    foreach line in data do
+        decl numbersInLineIndex: int
+        new<int8>[line:size] => decl numbersInLine: [int8]
+
+        for i in 0 to line:size do
+            for index in 0 to validNums:size do
+                validNums[index] => decl valid: str
+                if valid (i line:subString):startsWith then
+                    if index 9 >= then
+                        index 9 -> index
+                    fi
+                    validNums[index][0] => numbersInLine[numbersInLineIndex]
+                    numbersInLineIndex 1 +> numbersInLineIndex
+                    break
+                fi
+            done
+        done
+
+        numbersInLine => decl numStr: str
+        new<int8> { numStr[0], numStr[numStr:size 1 -], 0 } str::new int::parse => nums[numIndex]
+        numIndex 1 +> numIndex
+    done
+
+    nums do 'reduce Reducers::sum return
+end
+
+function main(args: [str]): none
+    if "day1/input.txt" File::exists ! then
+        "Please put your input for day 1 in a file called input.txt in the day1 folder" eputs
+        return
+    fi
+    
+    "day1/input.txt" File::new => decl f: File
+    f:readLines => decl lines: [str]
+    lines part1 puts
+    lines part2 puts
 end
