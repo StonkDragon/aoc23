@@ -1,5 +1,3 @@
-import std.runtime.GarbageCollector
-
 struct Entry
     decl reds: int
     decl greens: int
@@ -13,7 +11,7 @@ struct Entry
 end
 
 struct Game
-    decl draws: Array
+    decl draws: TypedArray<Entry>
     decl number: int
 
     function init(x: int): none
@@ -31,10 +29,10 @@ function parseGames(data: [str]): TypedArray<Game>
         colon 1 + line:subString => decl elements: str
 
         ";" elements:split => decl draws: [str]
-        draws:size Array::new => games[i].draws
+        draws:size TypedArray<Entry>::new => games[i].draws
         foreach draw in draws do
             Entry::new games[i].draws:push
-            games[i].draws:top as Entry => decl entry: Entry
+            games[i].draws:top => decl entry: Entry
             "," draw as str:split => decl colors: [str]
             foreach color in colors do
                 color as str:trim => decl colorStr: str
