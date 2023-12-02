@@ -1,3 +1,134 @@
-function main(): none
-    "Hello, World" puts
+import std.runtime.GarbageCollector
+
+struct Entry
+    decl reds: int
+    decl greens: int
+    decl blues: int
+
+    function init(): none
+        0 => reds
+        0 => greens
+        0 => blues
+    end
+end
+
+struct Game
+    decl draws: Array
+    decl number: int
+
+    function init(x: int): none
+        x => number
+    end
+end
+
+function parseGames(data: [str]): TypedArray<Game>
+    data:size TypedArray<Game>::new => decl games: TypedArray<Game>
+
+    for i in 0 to data:size do
+        data[i] => decl line: str
+        i 1 + Game::new => games[i]
+        ':' line:indexOf => decl colon: int
+        colon 1 + line:subString => decl elements: str
+
+        ";" elements:split => decl draws: [str]
+        draws:size Array::new => games[i].draws
+        foreach draw in draws do
+            Entry::new games[i].draws:push
+            games[i].draws:top as Entry => decl entry: Entry
+            "," draw as str:split => decl colors: [str]
+            foreach color in colors do
+                color as str:trim => decl colorStr: str
+                decl countStr: str
+                decl index: int
+                while colorStr[index] '0' >= colorStr[index] '9' <= && index colorStr:size < && do
+                    countStr colorStr[index] int8::toString + => countStr
+                    index 1 + => index
+                done
+                index 1 + => index
+                index colorStr:subString => decl theColor: str
+                countStr int::parse => decl count: int
+                if theColor "red" == then
+                    entry.reds count + => entry.reds
+                elif theColor "green" == then
+                    entry.greens count + => entry.greens
+                elif theColor "blue" == then
+                    entry.blues count + => entry.blues
+                else
+                    "Unknown color: " theColor + eputs
+                    "Parsing Game #" i 1 + + eputs
+                fi
+            done
+        done
+    done
+
+    games return
+end
+
+function part1(data: [str]): int
+    data parseGames => decl games: TypedArray<Game>
+
+    decl sol: int
+    for i in 0 to games.count do
+        games[i] => decl game
+        decl redTotal: int
+        decl greenTotal: int
+        decl blueTotal: int
+        foreach draw in game.draws do
+            redTotal   draw as Entry.reds max => redTotal
+            greenTotal draw as Entry.greens max => greenTotal
+            blueTotal  draw as Entry.blues max => blueTotal
+        done
+
+        # "Game #" game.number + " with:" + puts
+        "Game " game:toString + " with " + game.draws.count + " draws:" + puts
+        "    " redTotal + " reds" + puts
+        "    " greenTotal + " greens" + puts
+        "    " blueTotal + " blues" + puts
+        
+        if redTotal 12 > then
+            continue
+        fi
+        if greenTotal 13 > then
+            continue
+        fi
+        if blueTotal 14 > then
+            continue
+        fi
+        
+        "    Is valid" puts
+        sol game.number + => sol
+    done
+    sol return
+end
+
+function part2(data: [str]): int
+    data parseGames => decl games: TypedArray<Game>
+
+    decl sol: int
+    for i in 0 to games.count do
+        games[i] => decl game
+        decl redTotal: int
+        decl greenTotal: int
+        decl blueTotal: int
+        foreach draw in game.draws do
+            redTotal   draw as Entry.reds max => redTotal
+            greenTotal draw as Entry.greens max => greenTotal
+            blueTotal  draw as Entry.blues max => blueTotal
+        done
+
+        redTotal greenTotal * blueTotal * sol + => sol
+    done
+    sol return
+end
+
+function main(args: [str]): none
+    if "day2/input.txt" File::exists ! then
+        "Please put your input for day 1 in a file called input.txt in the day2 folder" eputs
+        return
+    fi
+
+    "day2/input.txt" File::new => decl f: File
+    f:readLines => decl lines: [str]
+    lines part1 puts
+    lines part2 puts
 end
