@@ -1,0 +1,90 @@
+
+function checkAround2(mat: [str], i: int, j: int): Triple
+    new<Pair> { (1,1), (1,0), (1,-1), (0,1), (0,-1), (-1,1), (-1,0), (-1,-1) } => decl pairs: [Pair]
+    foreach pair in pairs do
+        # "Checking at " i + " " + j + " " + puts
+        if ((i pair.a + 0 >=) (i pair.a + mat:size <) &&) then
+            if ((j pair.b + 0 >=) (j pair.b + mat[i]:size <) &&) then
+                # "  In bounds: " (i pair.a +) + " " + (j pair.b +) + puts
+                mat[i pair.a +][j pair.b +] => decl char: int8
+                if char '*' == then
+                    (
+                        i pair.a +,
+                        j pair.b +,
+                        true
+                    ) return
+                    # true return
+                fi
+            fi
+        fi
+    done
+    (0, 0, false) return
+    # false return
+end
+
+function parseToNumbers2(data: [str]): TypedArray<Number>
+    1536 TypedArray<Number>::new => decl numbers: TypedArray<Number>
+    new<Pair> { (1,1), (1,0), (1,-1), (0,1), (0,-1), (-1,1), (-1,0), (-1,-1) } => decl pairs: [Pair]
+    for i in 0 to data:size do
+        decl j: int
+        for j in 0 to data[i]:size do
+            if j data[i]:size >= then
+                break
+            fi
+            if data[i][j] '0' >= data[i][j] '9' <= && then
+                Number2::new => decl num: Number2
+                (i, j) => decl numStart: Pair
+
+                while data[i][j] '0' >= data[i][j] '9' <= && do
+                    data i j checkAround2 => decl hasSymbol: Triple
+                    if hasSymbol.c then
+                        hasSymbol.a => decl posX: int
+                        hasSymbol.b => decl posY: int
+
+                        # hasSymbol puts
+                        # numStart puts
+
+                        true => num.hasSymbol
+                        (posX, posY) => num.symLoc
+                    fi
+                    10 num.value * => num.value
+                    num.value (data[i][j] '0' -) +> num.value
+
+                    j 1 +> j
+                    if j data[i]:size >= then
+                        break
+                    fi
+                done
+                num numbers:push
+            fi
+        done
+    done
+    numbers return
+end
+
+function part2(data: [int]): int
+    data parseToNumbers2 => decl numbers: TypedArray<Number>
+
+    numbers.count TypedArray<Number2>::new => decl filteredNumbers: TypedArray<Number2>
+
+    foreach num: Number2 in numbers do
+        if num.symLoc nil == then
+            continue
+        fi
+        decl found: bool
+        foreach num2: Number2 in numbers do
+            if num.symLoc num2.symLoc == then
+                true => found
+                num2 puts
+                break
+            fi
+        done
+        if found then
+            num puts
+        fi
+    done
+
+    # filteredNumbers puts
+
+    0 return
+end

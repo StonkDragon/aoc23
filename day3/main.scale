@@ -1,21 +1,6 @@
 import std.util.Pair
 import std.util.Triple
 
-function makeMatrix(data: [str]): [[int8]]
-    new<[int8]>[data:size] => decl mat: [[int8]]
-    for i in 0 to data:size do
-        new<int8>[data[i]:size] => mat[i]
-        for j in 0 to data[i]:size do
-            if data[i][j] '.' == then
-                0 => mat[i][j]
-            else
-                data[i][j] => mat[i][j]
-            fi
-        done
-    done
-    mat return
-end
-
 struct Number
     decl value: int
     decl hasSymbol: bool
