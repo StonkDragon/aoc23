@@ -1,3 +1,100 @@
-function main(): none
-    "Hello, World" puts
+import std.util.Pair
+import std.util.Triple
+
+function makeMatrix(data: [str]): [[int8]]
+    new<[int8]>[data:size] => decl mat: [[int8]]
+    for i in 0 to data:size do
+        new<int8>[data[i]:size] => mat[i]
+        for j in 0 to data[i]:size do
+            if data[i][j] '.' == then
+                0 => mat[i][j]
+            else
+                data[i][j] => mat[i][j]
+            fi
+        done
+    done
+    mat return
+end
+
+struct Number
+    decl value: int
+    decl hasSymbol: bool
+end
+
+struct Number2: Number
+    decl symLoc: Pair?
+end
+
+function checkAround(mat: [str], i: int, j: int): bool
+    new<Pair> { (1,1), (1,0), (1,-1), (0,1), (0,-1), (-1,1), (-1,0), (-1,-1) } => decl pairs: [Pair]
+    foreach pair in pairs do
+        if ((i pair.a + 0 >=) (i pair.a + mat:size <) &&) then
+            if ((j pair.b + 0 >=) (j pair.b + mat[i]:size <) &&) then
+                mat[i pair.a +][j pair.b +] => decl char: int8
+                if (char '.' !=) ((char '0' <) (char '9' >) ||) && then
+                    true return
+                fi
+            fi
+        fi
+    done
+    false return
+end
+
+function parseToNumbers(data: [str]): TypedArray<Number>
+    1536 TypedArray<Number>::new => decl numbers: TypedArray<Number>
+    for i in 0 to data:size do
+        decl j: int
+        for j in 0 to data[i]:size do
+            if j data[i]:size >= then
+                break
+            fi
+            if data[i][j] '0' >= data[i][j] '9' <= && then
+                Number::new => decl num: Number
+                while data[i][j] '0' >= data[i][j] '9' <= && do
+                    data i j checkAround => decl hasSymbol: bool
+                    if hasSymbol then
+                        true => num.hasSymbol
+                    fi
+                    10 num.value * => num.value
+                    num.value (data[i][j] '0' -) +> num.value
+
+                    j 1 +> j
+                    if j data[i]:size >= then
+                        break
+                    fi
+                done
+                num numbers:push
+            fi
+        done
+    done
+    numbers return
+end
+
+function part1(data: [str]): int
+    data parseToNumbers => decl numbers: TypedArray<Number>
+
+    decl sum: int
+    for i in 0 to numbers.count do
+        if numbers[i].hasSymbol then
+            sum numbers[i].value + => sum
+        fi
+    done
+
+    sum return
+end
+
+function part2(data: [str]): int
+    0 return
+end
+
+function main(args: [str]): none
+    if "day3/input.txt" File::exists ! then
+        "Please put your input for day 1 in a file called input.txt in the day3 folder" eputs
+        return
+    fi
+
+    "day3/input.txt" File::new => decl f: File
+    f:readLines => decl lines: [str]
+    lines part1 puts
+    lines part2 puts
 end
