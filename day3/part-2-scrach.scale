@@ -1,3 +1,6 @@
+struct Part2Solution
+
+end
 
 function checkAround2(mat: [str], i: int, j: int): Triple
     new<Pair> { (1,1), (1,0), (1,-1), (0,1), (0,-1), (-1,1), (-1,0), (-1,-1) } => decl pairs: [Pair]

@@ -56,7 +56,7 @@ end
 
 function main(args: [str]): none
     if "day1/input.txt" File::exists ! then
-        "Please put your input for day 1 in a file called input.txt in the day1 folder" eputs
+        "Please put your input for the day in a file called input.txt in the day1 folder" eputs
         return
     fi
     

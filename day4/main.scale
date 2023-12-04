@@ -1,3 +1,108 @@
-function main(): none
-    "Hello, World" puts
+struct Card
+    decl num: int
+    decl winning: [int]
+    decl have: [int]
+
+    decl copies: int
+
+    function init(x: int): none
+        x => num
+        1 => copies
+    end
+
+    function points(): int
+        decl p: int
+        foreach win in winning do
+            foreach x in have do
+                if x win == then
+                    if p 0 == then
+                        1 => p
+                    else
+                        p 2 * => p
+                    fi
+                fi
+            done
+        done
+        p return
+    end
+
+    function nCards(): int
+        decl p: int
+        foreach win in winning do
+            foreach x in have do
+                if x win == then
+                    p 1 +> p
+                fi
+            done
+        done
+        p return
+    end
+end
+
+function parseCards(data: [str]): TypedArray<Card>
+    10 TypedArray<Card>::new => decl cards: TypedArray<Card>
+    foreach line in data do
+        if "Card " line:startsWith ! then
+            continue
+        fi
+
+        ':' line:indexOf 1 + line:subString => line
+        "|" line:split => decl parts: [str]
+        assert (parts:size 2 ==)
+
+        cards.count 1 + Card::new => decl card: Card
+        " " parts[0]:trim:split do 'filter lambda(s: str): bool s:size 0 != return end as [str] => decl wins: [str]
+        " " parts[1]:trim:split do 'filter lambda(s: str): bool s:size 0 != return end as [str] => decl haves: [str]
+        new<int>[wins:size] => card.winning
+        new<int>[haves:size] => card.have
+        for i in 0 to wins:size do
+            wins[i] int::parse => card.winning[i]
+        done
+        for i in 0 to haves:size do
+            haves[i] int::parse => card.have[i]
+        done
+        card cards:push
+    done
+    cards return
+end
+
+function part1(data: [str]): int
+    decl sum: int
+    foreach card: Card in data parseCards do
+        card:points sum +> sum
+    done
+
+    sum return
+end
+
+function part2(data: [str]): int
+    data parseCards => decl cards: TypedArray<Card>
+    decl newCards: TypedArray<Card>
+
+    foreach (card: Card, index) in cards do
+        card:nCards => decl additionalCards: int
+
+        for i in 1 to additionalCards 1 + do
+            cards[index i +].copies card.copies +> cards[index i +].copies
+        done
+    done
+
+    decl sum: int
+    foreach card: Card in cards do
+        card.copies sum +> sum
+    done
+    
+    sum return
+end
+
+function main(args: [str]): none
+    if "day4/input.txt" File::exists ! then
+        "Please put your input for the day in a file called input.txt in the day4 folder" eputs
+        return
+    fi
+
+    "day4/input.txt" File::new => decl f: File
+    f:readLines => decl lines: [str]
+    lines part1 puts
+    lines part2 puts
 end
