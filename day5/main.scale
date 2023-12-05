@@ -1,3 +1,156 @@
-function main(): none
-    "Hello, World" puts
+import std.runtime.GarbageCollector
+
+struct TypedPair<T: SclObject, U: SclObject>
+    decl a: T
+    decl b: U
+
+    function init(a: T, b: U): none
+        a => self.a
+        b => self.b
+    end
+
+    function toString(): str
+        "(" self.a:toString + ", " + self.b:toString + ")" + return
+    end
+end
+
+struct Almanac
+    decl maps: TypedArray<TypedArray<TypedPair<Range, Range>>>
+    decl opMap: TypedArray<TypedPair<Range, Range>>
+    decl seeds: [int]
+
+    function init(): none
+        10 TypedArray<TypedArray<TypedPair<Range, Range>>>::new => self.maps
+    end
+
+    nonvirtual
+    function map(seed: int): int
+        seed => decl val: int
+        for i in 0 to maps.count do
+            maps[i] as TypedArray<TypedPair<Range, Range>> => decl map: TypedArray<TypedPair<Range, Range>>
+            for j in 0 to map.count do
+                map[j] => decl rangePair: TypedPair<Range, Range>
+                if val rangePair.a:contains then
+                    val rangePair.a.lower - rangePair.b.lower + => val
+                    break
+                fi
+            done
+        done
+        val return
+    end
+
+    nonvirtual
+    function unmap(loc: int): int
+        loc => decl val: int
+        for i in maps.count 1 - to -1 step -- do
+            maps[i] as TypedArray<TypedPair<Range, Range>> => decl map: TypedArray<TypedPair<Range, Range>>
+            for j in map.count 1 - to -1 step -- do
+                map[j] => decl rangePair: TypedPair<Range, Range>
+                if val rangePair.b:contains then
+                    val rangePair.b.lower - rangePair.a.lower + => val
+                    break
+                fi
+            done
+        done
+        val return
+    end
+end
+
+function parseInput(data: [str]): Almanac
+    decl almanac: Almanac
+
+    -1 => decl mapIndex: int
+    foreach line in data do
+        if "seeds: " line:startsWith then
+            " " 7 line:subString:split => decl seeds: [str]
+            new<int>[seeds:size] => almanac.seeds
+            foreach (seed: str, i) in seeds do
+                seed int::parse => almanac.seeds[i]
+            done
+            continue
+        fi
+        if line:size 0 == then
+            mapIndex++ => mapIndex
+            8 TypedArray<TypedPair<Range, Range>>::new => almanac.maps[mapIndex]
+            continue
+        fi
+        if line[0] 'a' >= line[0] 'z' <= && then continue fi
+
+        " " line:split => decl parts: [str]
+        assert (parts:size 3 ==)
+
+        parts[0] int::parse => decl toBegin: int
+        parts[1] int::parse => decl fromBegin: int
+        parts[2] int::parse => decl len: int
+
+        (fromBegin to fromBegin len +)
+        (toBegin to toBegin len +)
+        TypedPair<Range, Range>::new
+        almanac.maps[mapIndex] as TypedArray<TypedPair<Range, Range>>:push
+    done
+
+    almanac return
+end
+
+function part1(data: [str]): int
+    data parseInput => decl almanac: Almanac
+
+    int::maxValue => decl location: int
+    foreach seed in almanac.seeds do
+        seed almanac:map location min => location
+    done
+
+    location return
+end
+
+function anyMatches(l: lambda(any): bool, arr: Array): bool
+    for i in 0 to arr.count do
+        if arr[i] l:accept then
+            true return
+        fi
+    done
+    false return
+end
+
+function part2(data: [str]): int
+    data parseInput => decl almanac: Almanac
+
+    assert (almanac.seeds:size 2 % 0 ==)
+
+    decl seedRanges: TypedArray<Range>
+
+    for i in 0 to almanac.seeds:size 2 - step +2 do
+        almanac.seeds[i] => decl start: int
+        almanac.seeds[i 1 +] => decl size: int
+        (start to start size +) seedRanges:push
+    done
+
+    0 => decl location: int
+    true => decl run: bool
+    while run do
+        location almanac:unmap => decl ideal: int
+        foreach range: Range in seedRanges do
+            if ideal range:contains then
+                false => run
+                break
+            fi
+        done
+        if run then
+            location 1 + => location
+        fi
+    done
+
+    location return
+end
+
+function main(args: [str]): none
+    if "day5/input.txt" File::exists ! then
+        "Please put your input for the day in a file called input.txt in the day5 folder" eputs
+        return
+    fi
+
+    "day5/input.txt" File::new => decl f: File
+    f:readLines => decl lines: [str]
+    lines part1 puts
+    lines part2 puts
 end
