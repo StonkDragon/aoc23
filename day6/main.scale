@@ -1,3 +1,87 @@
-function main(): none
-    "Hello, World" puts
+struct Race
+    decl time: int
+    decl dist: int
+end
+
+function parseRaces(data: [str]): [Race]
+    assert (data:size 2 ==)
+    new<[str]>[2] => decl raceData: [[str]]
+    for i in 0 to data:size do
+        data[i] => decl line: str
+        ':' line:indexOf 1 + line:subString:trim => line
+
+        " " line:split do 'filter lambda(s: str): bool s:size 0 != return end as [str] => decl races: [str]
+
+        races => raceData[i]
+    done
+    new<Race>[raceData[0]:size] => decl races: [Race]
+    for i in 0 to races:size do
+        Race {
+            (raceData[0][i] int::parse) => time
+            (raceData[1][i] int::parse) => dist
+        } => races[i]
+    done
+    races return
+end
+
+function parseRace(data: [str]): Race
+    assert (data:size 2 ==)
+    new<str>[2] => decl raceData: [str]
+    for i in 0 to data:size do
+        data[i] => decl line: str
+        ':' line:indexOf 1 + line:subString:trim => line
+
+        line do 'filter lambda(c: int8): bool c ' ' != return end => decl race: str
+
+        race => raceData[i]
+    done
+    Race {
+        (raceData[0] int::parse) => time
+        (raceData[1] int::parse) => dist
+    } return
+end
+
+function part1(data: [str]): int
+    data parseRaces => decl races: [Race]
+
+    1 => decl total: int
+    foreach race in races do
+        decl possibleWins: int
+        for speed in 0 to race.time do
+            race.time speed - speed * => decl totalDist: int
+            # totalDist "mm" + " at " + speed + "mm/ms" + puts
+            if totalDist race.dist > then
+                possibleWins++ => possibleWins
+            fi
+        done
+        total possibleWins * => total
+    done
+
+    total return
+end
+
+function part2(data: [str]): int
+    assert (data:size 2 ==)
+    data parseRace => decl race: Race
+
+    decl possibleWins: int
+    for speed in 0 to race.time do
+        race.time speed - speed * => decl totalDist: int
+        if totalDist race.dist > then
+            possibleWins++ => possibleWins
+        fi
+    done
+    possibleWins return
+end
+
+function main(args: [str]): none
+    if "day6/input.txt" File::exists ! then
+        "Please put your input for the day in a file called input.txt in the day6 folder" eputs
+        return
+    fi
+
+    "day6/input.txt" File::new => decl f: File
+    f:readLines => decl lines: [str]
+    lines part1 puts
+    lines part2 puts
 end
