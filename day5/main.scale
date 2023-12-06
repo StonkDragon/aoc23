@@ -103,15 +103,6 @@ function part1(data: [str]): int
     location return
 end
 
-function anyMatches(l: lambda(any): bool, arr: Array): bool
-    for i in 0 to arr.count do
-        if arr[i] l:accept then
-            true return
-        fi
-    done
-    false return
-end
-
 function part2(data: [str]): int
     data parseInput => decl almanac: Almanac
 
@@ -119,7 +110,7 @@ function part2(data: [str]): int
 
     decl seedRanges: TypedArray<Range>
 
-    for i in 0 to almanac.seeds:size 2 - step +2 do
+    for i in 0 to almanac.seeds:size 2 - step 2 + do
         almanac.seeds[i] => decl start: int
         almanac.seeds[i 1 +] => decl size: int
         (start to start size +) seedRanges:push
