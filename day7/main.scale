@@ -1,3 +1,134 @@
-function main(): none
-    "Hello, World" puts
+import std.functional.Do
+
+enum HandType
+    None
+    HighCard
+    OnePair
+    TwoPair
+    ThreeOfAKind
+    FullHouse
+    FourOfAKind
+    FiveOfAKind
+end
+
+struct Hand
+    decl cards: [int]
+    decl bid: int
+    decl handType: HandType
+
+    function calculateHandType(withJokers: bool): HandType
+        if withJokers then
+            cards do 'filter lambda(val: int): bool val 1 != return end
+        else
+            cards
+        fi => decl cardsWithoutJokers: [int]
+
+        decl numberOfJokers: int
+        if withJokers then
+            cards do 'count lambda(val: int): bool val 1 == return end => numberOfJokers
+        fi
+
+        new<int>[15] => decl cardCounts: [int]
+        foreach card in cardsWithoutJokers do
+            cardCounts[card] 1 + => cardCounts[card]
+        done
+        cardCounts:sort:reverse => cardCounts
+        # cardCounts[0]: most common card amount
+        # cardCounts[1]: second most common card amount
+        # ...
+        
+        if (numberOfJokers 5 ==) ((cardCounts[0] numberOfJokers +) 5 ==) || then HandType::FiveOfAKind return fi
+        if (cardCounts[0] numberOfJokers +) 4 == then HandType::FourOfAKind return fi
+        if ((cardCounts[0] numberOfJokers +) 3 ==) (cardCounts[1] 2 ==) && then HandType::FullHouse return fi
+        if (cardCounts[0] numberOfJokers +) 3 == then HandType::ThreeOfAKind return fi
+        if ((cardCounts[0] numberOfJokers +) 2 ==) (cardCounts[1] 2 ==) && then HandType::TwoPair return fi
+        if (cardCounts[0] numberOfJokers +) 2 == then HandType::OnePair return fi
+        HandType::None return
+    end
+
+    nonvirtual
+    function isStronger(other: Hand): int
+        if self.handType other.handType > then
+            1 return
+        elif self.handType other.handType < then
+            -1 return
+        fi
+        foreach (card, index) in cards do
+            if card other.cards[index] > then
+                1 return
+            elif card other.cards[index] < then
+                -1 return
+            fi
+        done
+        0 return
+    end
+end
+
+function parseHands(data: [str], jIsJoker: bool): TypedArray<Hand>
+    decl hands: TypedArray<Hand>
+    foreach line in data do
+        " " line:split => decl parts: [str]
+        assert (parts:size 2 ==)
+
+        parts[0]:view => decl cardData: [int8]
+        new<int>[cardData:size] => decl cards: [int]
+        foreach (char, index) in cardData do
+            if char 'A' == then
+                14 => cards[index]
+            elif char 'K' == then
+                13 => cards[index]
+            elif char 'Q' == then
+                12 => cards[index]
+            elif char 'J' == then
+                (jIsJoker ! 10 *) 1 + => cards[index]
+            elif char 'T' == then
+                10 => cards[index]
+            else
+                char '0' - => cards[index]
+            fi
+        done
+
+        parts[1] int::parse => decl bid: int
+
+        Hand::new => decl hand: Hand
+        cards => hand.cards
+        bid => hand.bid
+        jIsJoker hand:calculateHandType => hand.handType
+        
+        hand hands:push
+    done
+
+    ref Hand::isStronger hands:sort
+    
+    hands return
+end
+
+function solve(hands: TypedArray<Hand>): int
+    decl sum: int
+    foreach (x: Hand, i) in hands do
+        i 1 + => decl rank: int
+        sum x.bid rank * + => sum
+    done
+    
+    sum return
+end
+
+function part1(data: [str]): int
+    data false parseHands solve return
+end
+
+function part2(data: [str]): int
+    data true parseHands solve return
+end
+
+function main(args: [str]): none
+    if "day7/input.txt" File::exists ! then
+        "Please put your input for the day in a file called input.txt in the day7 folder" eputs
+        return
+    fi
+
+    "day7/input.txt" File::new => decl f: File
+    f:readLines => decl lines: [str]
+    lines part1 puts
+    lines part2 puts
 end
