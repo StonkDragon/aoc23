@@ -1,3 +1,82 @@
-function main(): none
-    "Hello, World" puts
+import std.util.Map
+
+struct CamelMap
+    decl directions: str
+    decl map: Map<Pair>
+
+    function init(data: [str]): none
+        assert (data:size 2 >)
+
+        data[0] => directions
+        data:size 2 - Map<Pair>::new => map
+
+        for i in 2 to data:size do
+            " = " data[i]:split => decl parts: [str]
+            parts => (decl key: str, decl value: str)
+            (1 to value:size 1 -) value:subString => value
+
+            ", " value:split => decl dirs: [str]
+            Pair {
+                dirs[0] => a
+                dirs[1] => b
+            } => map[key]
+        done
+    end
+end
+
+function solve(map: CamelMap, key: str): int
+    decl steps: int
+    while key[2] 'Z' != do
+        map.directions[steps map.directions:size %] => decl nextDir: int8
+        steps++ => steps
+        map.map[key][nextDir 'R' == as int] as str => key
+    done
+    
+    steps return
+end
+
+function part1(data: [str]): int
+    data CamelMap::new => decl map: CamelMap
+
+    map "AAA" solve return
+end
+
+function lcm(nums: [int]): int
+    assert (nums:size 2 >=)
+    if nums:size 2 == then
+        nums[0] nums[1] lcm return
+    else
+        nums[0] nums:tail lcm lcm return
+    fi
+end
+
+function part2(data: [str]): int
+    data CamelMap::new => decl map: CamelMap
+    decl startingNodes: TypedArray<str>
+
+    foreach kv: MapEntry<SclObject> in map.map do
+        if kv.key[2] 'A' == then
+            kv.key startingNodes:push
+        fi
+    done
+
+    new<int>[startingNodes.count] => decl distances: [int]
+    foreach (start: str, index) in startingNodes do
+        map start solve => distances[index]
+    done
+    
+    distances lcm => decl lowest: int
+    lowest return
+end
+
+function main(args: [str]): none
+    if "day8/input.txt" File::exists ! then
+        "Please put your input for the day in a file called input.txt in the day8 folder" eputs
+        return
+    fi
+
+    "day8/input.txt" File::new => decl f: File
+    f:readLines => decl lines: [str]
+    lines part1 puts
+    lines part2 puts
 end
