@@ -1,3 +1,67 @@
-function main(): none
-    "Hello, World" puts
+import std.functional.Do
+
+function parse(data: [str]): [[int]]
+    new<[int]>[data:size] => decl parsed: [[int]]
+    foreach (line: str, i) in data do
+        " " line:split => decl parts: [str]
+        new<int>[parts:size] => decl parsedLine: [int]
+        foreach (part: str, j) in parts do
+            part int::parse => parsedLine[j]
+        done
+        parsedLine => parsed[i]
+    done
+    parsed return
+end
+
+function differences(arr: [int]): [int]
+    new<int>[arr:size 1 -] => decl diffs: [int]
+    for i in 0 to arr:size 1 - do
+        arr[i 1 +] arr[i] - => diffs[i]
+    done
+    diffs return
+end
+
+function solve(measured: [int]) predicted: int
+    measured do 'count Counters::nonZero => decl nonZero: int
+    if nonZero 0 == then
+        0 => predicted
+    else
+        measured:last => decl last: int
+        measured differences solve => decl subPredicted: int
+        subPredicted last + => predicted
+    fi
+
+    return
+end
+
+function part1(data: [str]): int
+    data parse => decl parsed: [[int]]
+    decl sum: int
+    foreach measurement in parsed do
+        measurement solve => decl predicted: int
+        predicted sum + => sum
+    done
+    sum return
+end
+
+function part2(data: [str]): int
+    data parse => decl parsed: [[int]]
+    decl sum: int
+    foreach measurement in parsed do
+        measurement:reverse solve => decl predicted: int
+        predicted sum + => sum
+    done
+    sum return
+end
+
+function main(args: [str]): none
+    if "day9/input.txt" File::exists ! then
+        "Please put your input for the day in a file called input.txt in the day9 folder" eputs
+        return
+    fi
+
+    "day9/input.txt" File::new => decl f: File
+    f:readLines => decl lines: [str]
+    lines part1 puts
+    lines part2 puts
 end
